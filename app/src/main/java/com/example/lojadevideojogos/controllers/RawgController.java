@@ -2,13 +2,16 @@ package com.example.lojadevideojogos.controllers;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import com.example.lojadevideojogos.model.Game;
 import com.example.lojadevideojogos.model.RawgGame;
 import com.example.lojadevideojogos.model.RawgSearchResponse;
 import com.example.lojadevideojogos.network.RawgClient;
 import com.example.lojadevideojogos.util.DataState;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,10 +36,9 @@ public class RawgController {
                     if (rawResults.isEmpty()) {
                         searchResults.setValue(DataState.empty());
                     } else {
-                        // Converter RawgGame para o nosso Game (Phase 2)
+                        // Converter RawgGame para o nosso Game
                         List<Game> convertedGames = new ArrayList<>();
                         for (RawgGame raw : rawResults) {
-                            // Não temos price, stock, nem promos na RAWG. Inicializamos a 0/false.
                             Game g = new Game(null, raw.getId(), raw.getName(), raw.getBackgroundImage(), 0.0, 0, false, 0.0);
                             convertedGames.add(g);
                         }
@@ -51,7 +53,6 @@ public class RawgController {
 
             @Override
             public void onFailure(Call<RawgSearchResponse> call, Throwable t) {
-                // Timeout ou sem internet
                 searchResults.setValue(DataState.error("Falha na ligação: " + t.getMessage()));
             }
         });
