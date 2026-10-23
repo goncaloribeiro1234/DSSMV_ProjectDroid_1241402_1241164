@@ -1,9 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.LojadeVideoJogos" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Forçamos o tema escuro sem ActionBar para usarmos as nossas próprias Toolbars -->
+    <style name="Theme.LojaDeVideoJogos" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="colorPrimary">@color/gamehub_primary</item>
+        <item name="colorSecondary">@color/gamehub_secondary</item>
+        <item name="android:windowBackground">@color/gamehub_background_dark</item>
+        <item name="colorSurface">@color/gamehub_surface_dark</item>
+        <item name="android:textColorPrimary">@color/gamehub_text_light</item>
     </style>
-
-    <style name="Theme.LojadeVideoJogos" parent="Base.Theme.LojadeVideoJogos" />
 </resources>

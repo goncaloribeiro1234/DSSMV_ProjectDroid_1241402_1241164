@@ -25,7 +25,14 @@ android {
             properties.load(FileInputStream(localPropertiesFile))
         }
         buildConfigField("String", "RAWG_API_KEY", properties.getProperty("rawg.api.key", "\"\""))
+        buildConfigField(
+            "String",
+            "RESTDB_API_KEY",
+            properties.getProperty("restdb.api.key", "\"\"")
+        )
+        buildConfigField("String", "RAWG_API_KEY", properties.getProperty("rawg.api.key", "\"\""))
         buildConfigField("String", "RESTDB_API_KEY", properties.getProperty("restdb.api.key", "\"\""))
+        buildConfigField("String", "RESTDB_BASE_URL", properties.getProperty("restdb.base.url", "\"\""))   // <- nova
         buildConfigField("String", "ADMIN_PIN", properties.getProperty("admin.pin", "\"1234\""))
     }
 
@@ -79,4 +86,6 @@ dependencies {
 
     // 5. ML Kit
     implementation("com.google.mlkit:text-recognition:16.0.0")
+
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
 }
