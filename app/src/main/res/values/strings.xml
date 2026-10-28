@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">LojadeVideoJogos</string>
+    <string name="app_name">GameHub</string>
+    <string name="slogan">O teu catálogo definitivo de videojogos.</string>
+    <string name="btn_client">Entrar como Cliente</string>
+    <string name="btn_manager">Entrar como Gestor</string>
+    <string name="dialog_pin_title">Acesso Restrito</string>
+    <string name="dialog_pin_message">Introduza o PIN de Administrador:</string>
+    <string name="dialog_cancel">Cancelar</string>
+    <string name="dialog_confirm">Entrar</string>
+    <string name="error_wrong_pin">PIN incorreto. Tente novamente.</string>
 </resources>

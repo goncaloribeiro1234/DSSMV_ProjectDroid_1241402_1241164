@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="gamehub_primary">#6200EA</color> <!-- Roxo Gaming -->
+    <color name="gamehub_secondary">#03DAC5</color> <!-- Ciano Destaque -->
+    <color name="gamehub_background_dark">#121212</color>
+    <color name="gamehub_surface_dark">#1E1E1E</color> <!-- Cartões -->
+    <color name="gamehub_text_light">#FFFFFF</color>
+    <color name="gamehub_text_gray">#B3B3B3</color>
+    <color name="gamehub_error">#CF6679</color>
 </resources>

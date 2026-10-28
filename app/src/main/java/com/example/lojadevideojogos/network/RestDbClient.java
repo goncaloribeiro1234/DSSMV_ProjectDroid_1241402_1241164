@@ -1,41 +1,47 @@
 package com.example.lojadevideojogos.network;
 
 import com.example.lojadevideojogos.BuildConfig;
+
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestDbClient {
-    // ATENÇÃO: Substituir pelo vosso URL do RestDB (tem de acabar com a barra '/')
-    private static final String BASE_URL = "https://A_TUA_BASE_AQUI.restdb.io/rest/";
-    private static Retrofit retrofit = null;
 
-    public static RestDbApi getApi() {
-        if (retrofit == null) {
-            OkHttpClient client = new OkHttpClient.Builder()
+    private static RestDbApi api = null;
+
+    public static synchronized RestDbApi getApi() {
+        if (api == null) {
+            OkHttpClient.Builder builder = new OkHttpClient.Builder()
                     .connectTimeout(15, TimeUnit.SECONDS)
                     .readTimeout(15, TimeUnit.SECONDS)
+                    .writeTimeout(15, TimeUnit.SECONDS)
                     .addInterceptor(chain -> {
-                        Request original = chain.request();
-
-                        // O RestDB exige a chave secreta e o formato JSON nos Headers
-                        Request request = original.newBuilder()
+                        Request request = chain.request().newBuilder()
                                 .header("x-apikey", BuildConfig.RESTDB_API_KEY)
-                                .header("Content-Type", "application/json")
                                 .build();
-
                         return chain.proceed(request);
                     })
-                    .build();
+                    .addInterceptor(new RestDbRateLimitInterceptor());
 
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .client(client)
+            if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor logger = new HttpLoggingInterceptor();
+                logger.setLevel(HttpLoggingInterceptor.Level.BODY);
+                logger.redactHeader("x-apikey");
+                builder.addInterceptor(logger);
+            }
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BuildConfig.RESTDB_BASE_URL)
+                    .client(builder.build())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
+            api = retrofit.create(RestDbApi.class);
         }
-        return retrofit.create(RestDbApi.class);
+        return api;
     }
 }
