@@ -1,6 +1,5 @@
 package com.example.lojadevideojogos.views;
 
-import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +42,7 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.GameVi
         return gameList == null ? 0 : gameList.size();
     }
 
-    public void updateList(List<Game> newList) {
+    public void setGames(List<Game> newList) {
         this.gameList = newList;
         notifyDataSetChanged();
     }
@@ -77,7 +76,12 @@ public class GameCardAdapter extends RecyclerView.Adapter<GameCardAdapter.GameVi
                 binding.tvPromo.setVisibility(View.GONE);
             }
 
-            binding.getRoot().setOnClickListener(v -> listener.onGameClick(game));
+            // Ouve o clique e dispara a interface
+            binding.getRoot().setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onGameClick(game);
+                }
+            });
         }
     }
 }

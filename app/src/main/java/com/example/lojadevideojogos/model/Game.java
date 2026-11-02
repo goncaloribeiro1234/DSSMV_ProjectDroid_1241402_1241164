@@ -22,7 +22,7 @@ public class Game implements Serializable {
     @SerializedName("title")
     private String title;
 
-    @SerializedName("image_url")
+    @SerializedName("imageUrl")
     private String imageUrl;
 
     @SerializedName("price")

@@ -39,5 +39,7 @@
             android:name=".views.GameDetailActivity"
             android:exported="false" />
 
+        <activity android:name=".views.EditGameActivity" android:exported="false" />
+
     </application>
 </manifest>
