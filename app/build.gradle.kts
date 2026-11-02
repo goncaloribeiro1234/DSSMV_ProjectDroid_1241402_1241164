@@ -24,15 +24,10 @@ android {
         if (localPropertiesFile.exists()) {
             properties.load(FileInputStream(localPropertiesFile))
         }
-        buildConfigField("String", "RAWG_API_KEY", properties.getProperty("rawg.api.key", "\"\""))
-        buildConfigField(
-            "String",
-            "RESTDB_API_KEY",
-            properties.getProperty("restdb.api.key", "\"\"")
-        )
+
         buildConfigField("String", "RAWG_API_KEY", properties.getProperty("rawg.api.key", "\"\""))
         buildConfigField("String", "RESTDB_API_KEY", properties.getProperty("restdb.api.key", "\"\""))
-        buildConfigField("String", "RESTDB_BASE_URL", properties.getProperty("restdb.base.url", "\"\""))   // <- nova
+        buildConfigField("String", "RESTDB_BASE_URL", properties.getProperty("restdb.base.url", "\"\""))
         buildConfigField("String", "ADMIN_PIN", properties.getProperty("admin.pin", "\"1234\""))
     }
 
