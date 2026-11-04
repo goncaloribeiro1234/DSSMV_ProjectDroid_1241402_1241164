@@ -6,11 +6,12 @@
     android:orientation="vertical"
     android:padding="24dp">
 
-    <!-- Barra de Pesquisa -->
+    <!-- Barra de Pesquisa e Botão do Scanner -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
 
         <EditText
             android:id="@+id/etSearch"
@@ -24,7 +25,16 @@
             android:id="@+id/btnSearch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="Pesquisar" />
+
+        <!-- Botão para abrir o Scanner de Capas -->
+        <Button
+            android:id="@+id/btnOpenScanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="📷" />
     </LinearLayout>
 
     <!-- Espaço para a capa do jogo -->

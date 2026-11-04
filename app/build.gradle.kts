@@ -18,17 +18,23 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        // LER AS CHAVES DO LOCAL.PROPERTIES PARA O CÓDIGO JAVA
+        // LER AS CHAVES DO LOCAL.PROPERTIES COM SEGURANÇA TOTAL PARA O JAVA
         val properties = Properties()
         val localPropertiesFile = rootProject.file("local.properties")
         if (localPropertiesFile.exists()) {
             properties.load(FileInputStream(localPropertiesFile))
         }
 
-        buildConfigField("String", "RAWG_API_KEY", properties.getProperty("rawg.api.key", "\"\""))
-        buildConfigField("String", "RESTDB_API_KEY", properties.getProperty("restdb.api.key", "\"\""))
-        buildConfigField("String", "RESTDB_BASE_URL", properties.getProperty("restdb.base.url", "\"\""))
-        buildConfigField("String", "ADMIN_PIN", properties.getProperty("admin.pin", "\"1234\""))
+        val rawgKey = properties.getProperty("rawg.api.key", "")
+        val restdbKey = properties.getProperty("restdb.api.key", "")
+        val restdbUrl = properties.getProperty("restdb.base.url", "")
+        val adminPin = properties.getProperty("admin.pin", "1234")
+
+        // Sintaxe exata com interpolação protegida por chavetas e aspas escapadas
+        buildConfigField("String", "RAWG_API_KEY", "\"${rawgKey}\"")
+        buildConfigField("String", "RESTDB_API_KEY", "\"${restdbKey}\"")
+        buildConfigField("String", "RESTDB_BASE_URL", "\"${restdbUrl}\"")
+        buildConfigField("String", "ADMIN_PIN", "\"${adminPin}\"")
     }
 
     // Ativar o ViewBinding e a geração do BuildConfig
