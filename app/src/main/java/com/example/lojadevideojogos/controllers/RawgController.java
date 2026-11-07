@@ -38,7 +38,11 @@ public class RawgController {
                     } else {
                         List<Game> convertedGames = new ArrayList<>();
                         for (RawgGame raw : rawResults) {
-                            Game g = new Game(null, raw.getId(), raw.getName(), raw.getBackgroundImage(), 0.0, 0, false, 0.0);
+                            String img = raw.getBackgroundImage();
+                            if (img == null || img.isEmpty()) {
+                                img = "https://upload.wikimedia.org/wikipedia/commons/6/65/No-image-available.svg";
+                            }
+                            Game g = new Game(null, raw.getId(), raw.getName(), img, 0.0, 0, false, 0.0);
                             convertedGames.add(g);
                         }
                         searchResults.setValue(DataState.success(convertedGames));
@@ -55,30 +59,25 @@ public class RawgController {
         });
     }
 
-    // Fallback inteligente: força o jogo pesquisado a ficar sempre em 1º lugar (index 0) para o Glide mostrar a capa certa
     private void loadMockFallback(String query) {
         try {
             List<Game> mockList = MockData.getMockGames();
             if (mockList != null && !mockList.isEmpty()) {
-                List<Game> exactMatches = new ArrayList<>();
-                List<Game> others = new ArrayList<>();
+                List<Game> filtered = new ArrayList<>();
+                String q = query != null ? query.toLowerCase().trim() : "";
 
+                // Filtra estritamente para incluir apenas o jogo pesquisado
                 for (Game g : mockList) {
-                    if (g.getTitle() != null && g.getTitle().toLowerCase().contains(query.toLowerCase())) {
-                        exactMatches.add(g);
-                    } else {
-                        others.add(g);
+                    if (g.getTitle() != null && g.getTitle().toLowerCase().contains(q)) {
+                        filtered.add(g);
                     }
                 }
 
-                List<Game> finalMockList = new ArrayList<>();
-                finalMockList.addAll(exactMatches); // Os correspondentes ficam no topo
-                finalMockList.addAll(others);      // Os restantes logo a seguir
-
-                if (!finalMockList.isEmpty()) {
-                    searchResults.postValue(DataState.success(finalMockList));
+                if (!filtered.isEmpty()) {
+                    searchResults.postValue(DataState.success(filtered));
                 } else {
-                    searchResults.postValue(DataState.success(mockList));
+                    // Se não encontrar correspondência, devolve vazio em vez de mostrar o catálogo todo com o GTA V
+                    searchResults.postValue(DataState.empty());
                 }
                 return;
             }

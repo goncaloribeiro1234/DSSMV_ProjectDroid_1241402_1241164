@@ -38,15 +38,23 @@ public class GameDetailActivity extends AppCompatActivity {
         Button btnBuy = findViewById(R.id.btnComprarDetalhe);
         Button btnEdit = findViewById(R.id.btnEdit);
 
-        // Receber o objeto Game enviado pelo Adapter
+        // Receber o objeto Game enviado pelo Adapter ou pela MainActivity
         Game game = (Game) getIntent().getSerializableExtra("EXTRA_GAME");
 
         if (game != null) {
+            // Se veio da RAWG search, preço ou stock podem vir a 0, atribuímos valores padrão de demonstração se necessário
+            if (game.getPrice() <= 0.0) {
+                game.setPrice(49.99);
+            }
+            if (game.getStock() <= 0) {
+                game.setStock(10);
+            }
+
             if (tvTitle != null) tvTitle.setText(game.getTitle());
             if (textPreco != null) textPreco.setText(game.getPrice() + " €");
             if (textStock != null) textStock.setText("Stock: " + game.getStock() + " unidades");
 
-            if (imageCapa != null) {
+            if (imageCapa != null && game.getImageUrl() != null) {
                 Glide.with(this)
                         .load(game.getImageUrl())
                         .into(imageCapa);
@@ -56,7 +64,6 @@ public class GameDetailActivity extends AppCompatActivity {
         // Observar o estado das ações do StoreController (ex: update)
         storeController.getActionState().observe(this, state -> {
             if (state.status == DataState.Status.SUCCESS) {
-                // Mensagem genérica ou específica dependendo da ação
                 Toast.makeText(this, "Operação realizada com sucesso!", Toast.LENGTH_SHORT).show();
             } else if (state.status == DataState.Status.ERROR) {
                 Toast.makeText(this, "Erro: " + state.errorMessage, Toast.LENGTH_LONG).show();

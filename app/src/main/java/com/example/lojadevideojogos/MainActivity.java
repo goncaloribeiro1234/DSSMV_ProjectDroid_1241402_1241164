@@ -23,6 +23,7 @@ import com.bumptech.glide.request.target.Target;
 import com.example.lojadevideojogos.controllers.RawgController;
 import com.example.lojadevideojogos.databinding.ActivityMainBinding;
 import com.example.lojadevideojogos.model.Game;
+import com.example.lojadevideojogos.views.GameDetailActivity;
 import com.example.lojadevideojogos.views.ScannerActivity;
 
 import android.graphics.drawable.Drawable;
@@ -131,6 +132,21 @@ public class MainActivity extends AppCompatActivity {
         binding.btnOpenScanner.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ScannerActivity.class);
             scannerLauncher.launch(intent);
+        });
+
+        // 4. Configurar clique na capa para passar o objeto Game completo para o ecrã de detalhes
+        binding.ivCover.setOnClickListener(v -> {
+            if (controller.getSearchResults().getValue() != null &&
+                    controller.getSearchResults().getValue().data != null &&
+                    !controller.getSearchResults().getValue().data.isEmpty()) {
+
+                Game jogoSelecionado = controller.getSearchResults().getValue().data.get(0);
+
+                Intent intent = new Intent(MainActivity.this, GameDetailActivity.class);
+                // Passamos o objeto serializable exatamente como a GameDetailActivity espera
+                intent.putExtra("EXTRA_GAME", jogoSelecionado);
+                startActivity(intent);
+            }
         });
     }
 }
