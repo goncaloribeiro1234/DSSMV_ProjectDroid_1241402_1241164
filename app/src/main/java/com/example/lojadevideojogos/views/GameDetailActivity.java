@@ -43,12 +43,14 @@ public class GameDetailActivity extends AppCompatActivity {
         Game game = (Game) getIntent().getSerializableExtra("EXTRA_GAME");
 
         if (game != null) {
-            // Se veio da RAWG search, preço ou stock podem vir a 0, atribuímos valores padrão de demonstração se necessário
-            if (game.getPrice() <= 0.0) {
-                game.setPrice(49.99);
-            }
-            if (game.getStock() <= 0) {
-                game.setStock(10);
+            // CORREÇÃO: Se veio da RAWG (não tem ID da DB ainda), preço ou stock podem vir a 0, atribuímos valores padrão
+            if (game.getId() == null || game.getId().isEmpty() || game.getId().startsWith("mock_")) {
+                if (game.getPrice() <= 0.0) {
+                    game.setPrice(49.99);
+                }
+                if (game.getStock() <= 0) {
+                    game.setStock(10);
+                }
             }
 
             if (tvTitle != null) tvTitle.setText(game.getTitle());
