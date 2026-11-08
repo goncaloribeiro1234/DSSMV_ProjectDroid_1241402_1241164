@@ -2,13 +2,17 @@ package com.example.lojadevideojogos.views;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.example.lojadevideojogos.R;
 import com.example.lojadevideojogos.controllers.StoreController;
 import com.example.lojadevideojogos.databinding.ActivityStoreBinding;
+import com.example.lojadevideojogos.model.Game;
 import com.example.lojadevideojogos.util.DataState;
 import com.example.lojadevideojogos.util.SessionManager;
 
@@ -37,7 +41,7 @@ public class StoreActivity extends AppCompatActivity {
         });
         binding.rvGames.setAdapter(adapter);
 
-        // 2. Instanciar o controlador e ficar à escuta da internet
+        // 2. Instanciar o controlador e ficar à escuta da base de dados
         storeController = new StoreController();
         storeController.getGames().observe(this, state -> {
             if (state.status == DataState.Status.SUCCESS) {
@@ -47,10 +51,23 @@ public class StoreActivity extends AppCompatActivity {
             }
         });
 
-        // 3. Disparar o pedido GET para ir buscar os jogos ao RestDB
-        storeController.loadGames();
+        // 3. Configurar o botão de Adicionar Jogo para o Gestor
+        Button btnAddGame = findViewById(R.id.btnAddGame);
+        if (SessionManager.getInstance().isManager()) {
+            if (btnAddGame != null) btnAddGame.setVisibility(View.VISIBLE);
+        } else {
+            if (btnAddGame != null) btnAddGame.setVisibility(View.GONE);
+        }
 
-        // Configurar Navegação
+        if (btnAddGame != null) {
+            btnAddGame.setOnClickListener(v -> {
+                Intent intent = new Intent(StoreActivity.this, EditGameActivity.class);
+                intent.putExtra("EXTRA_GAME", new Game()); // Objeto vazio indica criação de novo jogo
+                startActivity(intent);
+            });
+        }
+
+        // Configurar Navegação Inferior
         binding.btnNavSearch.setOnClickListener(v -> {
             Intent intent = new Intent(StoreActivity.this, com.example.lojadevideojogos.MainActivity.class);
             startActivity(intent);
@@ -62,5 +79,14 @@ public class StoreActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Recarregar os jogos sempre que regressarmos à loja (para ver os novos adicionados/atualizados)
+        if (storeController != null) {
+            storeController.loadGames();
+        }
     }
 }

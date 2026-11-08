@@ -37,6 +37,7 @@ public class GameDetailActivity extends AppCompatActivity {
 
         Button btnBuy = findViewById(R.id.btnComprarDetalhe);
         Button btnEdit = findViewById(R.id.btnEdit);
+        Button btnDelete = findViewById(R.id.btnDelete);
 
         // Receber o objeto Game enviado pelo Adapter ou pela MainActivity
         Game game = (Game) getIntent().getSerializableExtra("EXTRA_GAME");
@@ -61,10 +62,12 @@ public class GameDetailActivity extends AppCompatActivity {
             }
         }
 
-        // Observar o estado das ações do StoreController (ex: update)
+        // Observar o estado das ações do StoreController (update, delete, etc.)
         storeController.getActionState().observe(this, state -> {
             if (state.status == DataState.Status.SUCCESS) {
                 Toast.makeText(this, "Operação realizada com sucesso!", Toast.LENGTH_SHORT).show();
+                // Se foi uma eliminação bem-sucedida, fecha o ecrã de detalhes
+                finish();
             } else if (state.status == DataState.Status.ERROR) {
                 Toast.makeText(this, "Erro: " + state.errorMessage, Toast.LENGTH_LONG).show();
             }
@@ -104,13 +107,26 @@ public class GameDetailActivity extends AppCompatActivity {
             });
         }
 
+        // Lógica de Eliminação (Gestor)
+        if (btnDelete != null) {
+            btnDelete.setOnClickListener(v -> {
+                if (game != null && game.getId() != null && !game.getId().startsWith("mock_")) {
+                    storeController.deleteGame(game.getId());
+                } else {
+                    Toast.makeText(this, "Este jogo é um mock local e não pode ser apagado da BD.", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
         // Lógica de Perfil (Gestor vs Cliente)
         if (SessionManager.getInstance().isManager()) {
             if(btnBuy != null) btnBuy.setVisibility(View.GONE);
             if(btnEdit != null) btnEdit.setVisibility(View.VISIBLE);
+            if(btnDelete != null) btnDelete.setVisibility(View.VISIBLE);
         } else {
             if(btnBuy != null) btnBuy.setVisibility(View.VISIBLE);
             if(btnEdit != null) btnEdit.setVisibility(View.GONE);
+            if(btnDelete != null) btnDelete.setVisibility(View.GONE);
         }
     }
 }

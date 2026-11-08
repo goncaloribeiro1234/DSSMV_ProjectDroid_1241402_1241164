@@ -143,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
                 Game jogoSelecionado = controller.getSearchResults().getValue().data.get(0);
 
                 Intent intent = new Intent(MainActivity.this, GameDetailActivity.class);
-                // Passamos o objeto serializable exatamente como a GameDetailActivity espera
                 intent.putExtra("EXTRA_GAME", jogoSelecionado);
                 startActivity(intent);
             }

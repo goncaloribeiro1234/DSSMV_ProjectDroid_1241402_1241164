@@ -59,10 +59,28 @@ public class ScannerActivity extends AppCompatActivity {
             }
 
             if (!textoLido.isEmpty() && !textoLido.equals("A apanhar texto da capa...")) {
+                // Normalizar para minúsculas para mapear diretamente para os jogos do Mock
+                String tLower = textoLido.toLowerCase();
+                String jogoFinal;
+
+                if (tLower.contains("gta") || tLower.contains("grand theft auto")) {
+                    jogoFinal = "Grand Theft Auto V";
+                } else if (tLower.contains("witcher")) {
+                    jogoFinal = "The Witcher 3";
+                } else if (tLower.contains("cyberpunk")) {
+                    jogoFinal = "Cyberpunk 2077";
+                } else if (tLower.contains("red dead") || tLower.contains("redemption")) {
+                    jogoFinal = "Red Dead Redemption 2";
+                } else if (tLower.contains("god of war")) {
+                    jogoFinal = "God of War";
+                } else {
+                    jogoFinal = textoLido;
+                }
+
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra("SCANNED_GAME_NAME", textoLido);
+                resultIntent.putExtra("SCANNED_GAME_NAME", jogoFinal);
                 setResult(RESULT_OK, resultIntent);
-                finish(); // Fecha a câmara e regressa à activity anterior
+                finish(); // Fecha a câmara e regressa à MainActivity com o jogo validado
             } else {
                 Toast.makeText(this, "Ainda não detetou nenhum texto válido na capa!", Toast.LENGTH_SHORT).show();
             }

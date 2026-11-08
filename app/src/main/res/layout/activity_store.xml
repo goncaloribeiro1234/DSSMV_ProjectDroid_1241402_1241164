@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#121212">
 
     <!-- Toolbar superior -->
     <com.google.android.material.appbar.MaterialToolbar
@@ -15,6 +16,20 @@
         app:titleTextColor="@color/gamehub_text_light"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <!-- Botão Adicionar Jogo (Visível apenas para o Gestor) -->
+    <Button
+        android:id="@+id/btnAddGame"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:backgroundTint="#FF9800"
+        android:text="Adicionar Novo Jogo"
+        android:textColor="#FFFFFF"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Grelha de Jogos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGames"
@@ -22,12 +37,12 @@
         android:layout_height="0dp"
         android:padding="4dp"
         android:clipToPadding="false"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintTop_toBottomOf="@id/btnAddGame"
         app:layout_constraintBottom_toTopOf="@id/bottomNavigation"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Navegação Inferior (Simplificada com botões para evitar dependência de menus xml nesta fase) -->
+    <!-- Navegação Inferior -->
     <LinearLayout
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
